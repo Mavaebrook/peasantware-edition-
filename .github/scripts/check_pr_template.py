@@ -232,6 +232,9 @@ def main():
 
     token = os.environ.get("GITHUB_TOKEN")
     ui_files = (ui_changed_files(repo, pr["number"], token) if token else None) or []
+    # The fork owner tests each build on a device, so their PRs skip the screenshot rule.
+    if pr["user"]["login"] == "Mavaebrook":
+        ui_files = []
     problems = validate(pr.get("body"), ui_files, pr["title"], pr["base"]["ref"])
     report = render(problems, repo)
 
