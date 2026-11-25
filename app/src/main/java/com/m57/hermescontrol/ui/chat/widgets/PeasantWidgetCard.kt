@@ -100,6 +100,7 @@ fun PeasantWidgetCard(
     modifier: Modifier = Modifier,
     inDashboard: Boolean = false,
     onRemoveFromDashboard: (() -> Unit)? = null,
+    onUpdated: (WidgetBlock) -> Unit = {},
 ) {
     var current by remember(block) { mutableStateOf(block) }
     var busy by remember { mutableStateOf(false) }
@@ -135,6 +136,7 @@ fun PeasantWidgetCard(
                     reply.block?.let {
                         current = it
                         DashboardPins.remember(it)
+                        onUpdated(it)
                     }
                     if (reply.ok || reply.pendingApproval) onSuccess()
                 }
@@ -179,6 +181,7 @@ fun PeasantWidgetCard(
                 is NetworkResult.Success -> {
                     current = result.data
                     DashboardPins.remember(result.data)
+                    onUpdated(result.data)
                 }
 
                 is NetworkResult.Failure -> {

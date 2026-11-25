@@ -24,13 +24,15 @@ import com.m57.hermescontrol.ui.chat.widgets.DashboardPins
 import com.m57.hermescontrol.ui.chat.widgets.PeasantWidgetCard
 import com.m57.hermescontrol.ui.chat.widgets.PeasantWidgets
 import com.m57.hermescontrol.ui.chat.widgets.WidgetBlock
+import com.m57.hermescontrol.ui.chat.widgets.replacing
 import com.m57.hermescontrol.ui.common.ExpressiveTextButton
 import kotlinx.coroutines.launch
 
 /**
  * The widgets on the dashboard: the ones the user pinned from chat, then the
  * Gateway's own tiles. Each pin shows its saved block at once and is refetched
- * when the panel opens. Send dashboard to TV shows them all full-screen on the TV.
+ * when the panel opens. A refresh or action on a card updates what Send dashboard
+ * to TV sends, so the TV shows what the phone shows.
  */
 @Composable
 internal fun DashboardWidgetsSection() {
@@ -101,7 +103,13 @@ internal fun DashboardWidgetsSection() {
                 )
             }
         }
-        shownTiles.forEach { block -> PeasantWidgetCard(block = block, inDashboard = true) }
+        shownTiles.forEach { block ->
+            PeasantWidgetCard(
+                block = block,
+                inDashboard = true,
+                onUpdated = { updated -> tiles = tiles.replacing(updated) },
+            )
+        }
         if (pins.none { it.snapshot != null } && shownTiles.isEmpty()) {
             Text(
                 text = stringResource(R.string.chat_dashboard_widgets_empty),

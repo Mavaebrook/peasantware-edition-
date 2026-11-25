@@ -269,3 +269,7 @@ internal fun tvBody(
         title?.let { put("title", it) }
         put("blocks", JsonArray(blocks.map { it.toTvJson() }))
     }
+
+/** This list with [updated] in place of the block with the same id; other blocks stay as they are. */
+internal fun List<WidgetBlock>.replacing(updated: WidgetBlock): List<WidgetBlock> =
+    map { if (it.id == updated.id) updated else it }
