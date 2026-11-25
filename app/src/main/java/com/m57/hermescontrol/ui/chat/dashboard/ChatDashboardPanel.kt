@@ -272,13 +272,18 @@ private fun ApprovalsSection(
                     )
                 }
             }
-            StripApprovals.Unknown ->
+
+            StripApprovals.Unknown -> {
                 Text(
                     text = stringResource(R.string.chat_dashboard_approvals_unknown),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
-            StripApprovals.NotAvailable -> Unit
+            }
+
+            StripApprovals.NotAvailable -> {
+                Unit
+            }
         }
     }
 }

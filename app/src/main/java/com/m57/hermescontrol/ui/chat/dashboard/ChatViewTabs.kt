@@ -16,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Chat
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
@@ -201,6 +202,7 @@ private fun ViewTab(
 }
 
 /** Sheet listing every view that isn't a tab yet, grouped like the menu. */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddTabSheet(
     existing: List<ScreenDefinition>,
