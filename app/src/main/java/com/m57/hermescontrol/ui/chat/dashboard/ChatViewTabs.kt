@@ -18,7 +18,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -43,6 +42,8 @@ import com.m57.hermescontrol.ScreenDefinition
 import com.m57.hermescontrol.ScreenRegistry
 import com.m57.hermescontrol.applock.ModalBottomSheet
 import com.m57.hermescontrol.profilelock.ProfileLock
+import com.m57.hermescontrol.ui.common.HermesTooltip
+import com.m57.hermescontrol.ui.common.ExpressiveIconButton as IconButton
 
 /**
  * Keeps the user's view shortcuts. Each is stored by its screen key's name,
@@ -148,12 +149,15 @@ fun ChatViewTabs(
                 onClose = { onRemove(screen) },
             )
         }
-        IconButton(onClick = onAddClick, modifier = Modifier.size(32.dp)) {
-            Icon(
-                imageVector = Icons.Filled.Add,
-                contentDescription = stringResource(R.string.chat_tabs_add),
-                modifier = Modifier.size(18.dp),
-            )
+        val addLabel = stringResource(R.string.chat_tabs_add)
+        HermesTooltip(addLabel) {
+            IconButton(onClick = onAddClick, modifier = Modifier.size(32.dp)) {
+                Icon(
+                    imageVector = Icons.Filled.Add,
+                    contentDescription = addLabel,
+                    modifier = Modifier.size(18.dp),
+                )
+            }
         }
     }
 }
@@ -189,12 +193,15 @@ private fun ViewTab(
                 modifier = Modifier.padding(vertical = 7.dp),
             )
             if (onClose != null) {
-                IconButton(onClick = onClose, modifier = Modifier.size(24.dp)) {
-                    Icon(
-                        imageVector = Icons.Filled.Close,
-                        contentDescription = stringResource(R.string.chat_tabs_close, label),
-                        modifier = Modifier.size(14.dp),
-                    )
+                val closeLabel = stringResource(R.string.chat_tabs_close, label)
+                HermesTooltip(closeLabel) {
+                    IconButton(onClick = onClose, modifier = Modifier.size(24.dp)) {
+                        Icon(
+                            imageVector = Icons.Filled.Close,
+                            contentDescription = closeLabel,
+                            modifier = Modifier.size(14.dp),
+                        )
+                    }
                 }
             }
         }
