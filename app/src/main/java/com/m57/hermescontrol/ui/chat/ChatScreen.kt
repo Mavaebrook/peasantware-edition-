@@ -161,6 +161,9 @@ import com.m57.hermescontrol.ui.chat.dashboard.DashboardApproval
 import com.m57.hermescontrol.ui.chat.dashboard.rememberChatTabsState
 import com.m57.hermescontrol.ui.chat.fullbleed.FullBleedChatList
 import com.m57.hermescontrol.ui.chat.fullbleed.TranscriptActions
+import com.m57.hermescontrol.ui.chat.profiles.ProfilePickerSheet
+import com.m57.hermescontrol.ui.chat.profiles.ProfilePickerViewModel
+import com.m57.hermescontrol.ui.chat.profiles.activeProfileName
 import com.m57.hermescontrol.ui.common.ActionProgressDialog
 import com.m57.hermescontrol.ui.common.AutoScrollingTitleText
 import com.m57.hermescontrol.ui.common.CredentialWarningBanner
@@ -307,6 +310,10 @@ fun ChatScreen(
     val listState = rememberLazyListState(prefetchStrategy = ChatTimelineNoPrefetchStrategy)
     val scrollScope = rememberCoroutineScope()
     val scrollController = rememberChatScrollController(listState, scrollScope)
+    val profilePickerViewModel: ProfilePickerViewModel = viewModel()
+    var showProfilePicker by remember { mutableStateOf(false) }
+    val activeProfileId by AuthManager.activeProfileId.collectAsStateWithLifecycle()
+    val pillAgentName by AgentDisplayName.current.collectAsStateWithLifecycle()
     val stripViewModel: ChatStatusStripViewModel = viewModel()
     val stripState by stripViewModel.state.collectAsStateWithLifecycle()
     val tabsState = rememberChatTabsState()
@@ -1180,10 +1187,11 @@ fun ChatScreen(
                 // Composer toolbar wiring (PR 1)
                 currentSessionModel = state.currentSessionModel,
                 showModelProvider = state.showModelProvider,
+                profileLabel = pillAgentName,
                 reasoningLevel = state.reasoningLevel,
                 reasoningWireLevel = state.reasoningWireLevel,
                 pendingReasoningLevel = state.pendingReasoningLevel,
-                onModelTap = { viewModel.openModelPicker() },
+                onModelTap = { showProfilePicker = true },
                 onReasoningTap = { level -> viewModel.setReasoningLevel(level) },
                 canDisableReasoning = state.currentModelCapabilities?.can_disable_reasoning,
                 supportsReasoning = state.currentModelCapabilities?.reasoningSupport,
@@ -1239,6 +1247,18 @@ fun ChatScreen(
             controller = viewModel.actionProgress,
             title = stringResource(R.string.system_update_progress_title),
         )
+
+        if (showProfilePicker) {
+            ProfilePickerSheet(
+                viewModel = profilePickerViewModel,
+                activeProfile = activeProfileName(activeProfileId),
+                onChangeModel = {
+                    showProfilePicker = false
+                    viewModel.openModelPicker()
+                },
+                onDismiss = { showProfilePicker = false },
+            )
+        }
 
         // In-session model picker (issue #589) — opens on "/model".
         if (state.showModelPicker) {
