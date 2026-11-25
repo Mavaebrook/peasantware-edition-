@@ -1599,6 +1599,7 @@
 
     <!-- Landing Screen -->
     <string name="landing_title">Hermes Mobile</string>
+    <string name="landing_edition">PeasantWare Edition</string>
     <string name="landing_subtitle">Control panel for Hermes Agent</string>
     <string name="landing_action_auth_login">Auth Login</string>
 
