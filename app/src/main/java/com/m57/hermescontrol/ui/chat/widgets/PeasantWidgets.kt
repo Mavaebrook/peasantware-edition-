@@ -22,6 +22,9 @@ import kotlinx.serialization.json.jsonObject
 
 /** Calls to the server's `peasant-gateway` Hermes plugin, which passes them on to the Gateway. */
 object PeasantWidgets {
+    /** The most widgets the TV shows at once (the Gateway's cast_to_tv limit). */
+    const val TV_MAX_BLOCKS = 12
+
     suspend fun fetch(id: String): NetworkResult<WidgetBlock> =
         withContext(Dispatchers.IO) {
             when (val result = safeApiCall { ApiClient.hermesApi.getWidget(id) }) {
@@ -46,6 +49,38 @@ object PeasantWidgets {
                 is NetworkResult.Failure -> {
                     result
                 }
+            }
+        }
+
+    /**
+     * Puts one widget on the TV. A library widget is refetched by the Gateway as it goes;
+     * a block an agent wrote by hand isn't in the library, so it goes as the block itself.
+     */
+    suspend fun sendToTv(block: WidgetBlock): NetworkResult<WidgetActionResult> =
+        withContext(Dispatchers.IO) {
+            val byId = safeApiCall { ApiClient.hermesApi.sendWidgetToTv(block.id, JsonObject(emptyMap())) }
+            val notInLibrary = byId is NetworkResult.Failure && (byId.error as? NetworkError.Http)?.code == 404
+            val result = if (notInLibrary) safeApiCall { ApiClient.hermesApi.sendToTv(tvBody(listOf(block))) } else byId
+            result.toTvResult()
+        }
+
+    /** Puts every widget on the dashboard on the TV at once, as the blocks the panel shows. */
+    suspend fun sendDashboardToTv(
+        blocks: List<WidgetBlock>,
+        title: String,
+    ): NetworkResult<WidgetActionResult> =
+        withContext(Dispatchers.IO) {
+            safeApiCall { ApiClient.hermesApi.sendToTv(tvBody(blocks.take(TV_MAX_BLOCKS), title)) }.toTvResult()
+        }
+
+    private fun NetworkResult<JsonElement?>.toTvResult(): NetworkResult<WidgetActionResult> =
+        when (this) {
+            is NetworkResult.Success -> {
+                data.decodeOr { runCatching { widgetJson.decodeFromJsonElement<WidgetActionResult>(it) }.getOrNull() }
+            }
+
+            is NetworkResult.Failure -> {
+                this
             }
         }
 

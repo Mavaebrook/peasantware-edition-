@@ -3,10 +3,13 @@ package com.m57.hermescontrol.ui.chat.widgets
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.put
 
 /** Fence tag an agent puts on a chat code block that holds one widget block. */
 const val WIDGET_FENCE_TAG = "peasant-widget"
@@ -247,3 +250,22 @@ fun WidgetBlock.content(): WidgetContent =
 
 /** Encodes a block for the local dashboard snapshot. */
 internal fun WidgetBlock.toJsonString(): String = widgetJson.encodeToString(WidgetBlock.serializer(), this)
+
+/** Blocks sent to the TV carry every field the Gateway checks, `v` included. */
+private val tvJson =
+    Json {
+        encodeDefaults = true
+        explicitNulls = false
+    }
+
+internal fun WidgetBlock.toTvJson(): JsonElement = tvJson.encodeToJsonElement(WidgetBlock.serializer(), this)
+
+/** The body of a cast to the TV: `{"blocks": [...], "title"?}`. */
+internal fun tvBody(
+    blocks: List<WidgetBlock>,
+    title: String? = null,
+): JsonObject =
+    buildJsonObject {
+        title?.let { put("title", it) }
+        put("blocks", JsonArray(blocks.map { it.toTvJson() }))
+    }
