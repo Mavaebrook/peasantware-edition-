@@ -203,11 +203,12 @@ private fun DashboardContent(
         )
         state.server?.let { ServerSection(server = it, onOpenServer = onOpenServer) }
         state.taskColumns?.let { TasksSection(columns = it, onOpenTasks = onOpenTasks) }
+        DashboardWidgetsSection()
     }
 }
 
 @Composable
-private fun SectionTitle(text: String) {
+internal fun SectionTitle(text: String) {
     Text(
         text = text.uppercase(),
         style = MaterialTheme.typography.labelSmall,
