@@ -76,6 +76,9 @@ import com.m57.hermescontrol.ui.chat.markdown.buildBulletRunText
 import com.m57.hermescontrol.ui.chat.markdown.coalesceBulletRuns
 import com.m57.hermescontrol.ui.chat.markdown.parseBlocks
 import com.m57.hermescontrol.ui.chat.markdown.splitInlineMath
+import com.m57.hermescontrol.ui.chat.widgets.PeasantWidgetCard
+import com.m57.hermescontrol.ui.chat.widgets.WIDGET_FENCE_TAG
+import com.m57.hermescontrol.ui.chat.widgets.parseWidgetBlock
 import com.m57.hermescontrol.util.BidiUtils
 
 private val URL_PATTERN = Regex("""https?://[^\s)>\[\]"'‘’]+""")
@@ -112,13 +115,22 @@ fun MarkdownText(
         for (block in blocks) {
             when (block) {
                 is MdBlock.Code -> {
-                    com.m57.hermescontrol.ui.chat.components.CodeBlockCard(
-                        code = block.code,
-                        language = block.language,
-                        onCopy = { /* clipboard handled internally */ },
-                        searchQuery = searchQuery,
-                        isCurrentMatch = isCurrentMatch,
-                    )
+                    val widget =
+                        remember(block, isStreaming) {
+                            val isWidget = !isStreaming && block.language == WIDGET_FENCE_TAG
+                            if (isWidget) parseWidgetBlock(block.code) else null
+                        }
+                    if (widget != null) {
+                        PeasantWidgetCard(block = widget)
+                    } else {
+                        com.m57.hermescontrol.ui.chat.components.CodeBlockCard(
+                            code = block.code,
+                            language = block.language,
+                            onCopy = { /* clipboard handled internally */ },
+                            searchQuery = searchQuery,
+                            isCurrentMatch = isCurrentMatch,
+                        )
+                    }
                 }
 
                 is MdBlock.Math -> {
