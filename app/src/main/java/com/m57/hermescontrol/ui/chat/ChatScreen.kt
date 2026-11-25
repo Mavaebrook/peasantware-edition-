@@ -34,6 +34,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CloudSync
+import androidx.compose.material.icons.filled.Dashboard
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenuItem
@@ -82,10 +83,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.m57.hermescontrol.BuildConfig
 import com.m57.hermescontrol.ExternalActivityLifecycleGuard
 import com.m57.hermescontrol.HistoryScreen
+import com.m57.hermescontrol.KanbanScreen
 import com.m57.hermescontrol.LogsScreen
 import com.m57.hermescontrol.NavigationController
 import com.m57.hermescontrol.R
 import com.m57.hermescontrol.SettingsConnection
+import com.m57.hermescontrol.SystemScreen
 import com.m57.hermescontrol.applock.AlertDialog
 import com.m57.hermescontrol.applock.DropdownMenu
 import com.m57.hermescontrol.data.local.AgentDisplayName
@@ -149,6 +152,13 @@ import com.m57.hermescontrol.ui.chat.components.replaceComposerDraft
 import com.m57.hermescontrol.ui.chat.components.restoreRejectedComposerDraft
 import com.m57.hermescontrol.ui.chat.components.shouldShowProgressChip
 import com.m57.hermescontrol.ui.chat.components.tailContentKey
+import com.m57.hermescontrol.ui.chat.dashboard.AddTabSheet
+import com.m57.hermescontrol.ui.chat.dashboard.ChatDashboardPanel
+import com.m57.hermescontrol.ui.chat.dashboard.ChatStatusStrip
+import com.m57.hermescontrol.ui.chat.dashboard.ChatStatusStripViewModel
+import com.m57.hermescontrol.ui.chat.dashboard.ChatViewTabs
+import com.m57.hermescontrol.ui.chat.dashboard.DashboardApproval
+import com.m57.hermescontrol.ui.chat.dashboard.rememberChatTabsState
 import com.m57.hermescontrol.ui.chat.drops.ReplyDropStack
 import com.m57.hermescontrol.ui.chat.fullbleed.FullBleedChatList
 import com.m57.hermescontrol.ui.chat.fullbleed.TranscriptActions
@@ -298,6 +308,18 @@ fun ChatScreen(
     val listState = rememberLazyListState(prefetchStrategy = ChatTimelineNoPrefetchStrategy)
     val scrollScope = rememberCoroutineScope()
     val scrollController = rememberChatScrollController(listState, scrollScope)
+    val stripViewModel: ChatStatusStripViewModel = viewModel()
+    val stripState by stripViewModel.state.collectAsStateWithLifecycle()
+    val tabsState = rememberChatTabsState()
+    var showAddTab by remember { mutableStateOf(false) }
+    var dashboardOpen by rememberSaveable { mutableStateOf(false) }
+    val chatPendingApprovals = remember(state.messages) { state.messages.count { it.approvalInfo != null } }
+    val dashboardApproval =
+        remember(state.messages) {
+            state.messages
+                .lastOrNull { it.approvalInfo != null }
+                ?.let { message -> message.approvalInfo?.let { DashboardApproval(message.id, it) } }
+        }
     var showContextSheet by remember { mutableStateOf(false) }
     var pendingSavePath by rememberSaveable { mutableStateOf<String?>(null) }
     var pendingSaveName by rememberSaveable { mutableStateOf<String?>(null) }
@@ -569,6 +591,7 @@ fun ChatScreen(
     HermesScaffold(
         showConnectionBanner = false,
         modifier = modifier,
+        drawerGesturesEnabled = !dashboardOpen,
         pinTopBar = true,
         title = {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -632,6 +655,12 @@ fun ChatScreen(
             }
         },
         actions = {
+            HermesIconButton(
+                imageVector = Icons.Filled.Dashboard,
+                label = stringResource(R.string.chat_dashboard_open),
+                onClick = { dashboardOpen = true },
+                modifier = Modifier.testTag("chat_dashboard_button"),
+            )
             HermesIconButton(
                 imageVector = Icons.Filled.Add,
                 label = stringResource(R.string.content_desc_new_chat),
@@ -802,6 +831,20 @@ fun ChatScreen(
                 connectionStatus = state.connectionStatus,
                 onReconnect = viewModel::reconnect,
                 onReloginClick = viewModel.relogin::open,
+            )
+
+            ChatStatusStrip(
+                state = stripState,
+                chatPendingApprovals = chatPendingApprovals,
+                onApprovalsClick = { dashboardOpen = true },
+                onTasksClick = { NavigationController.navigateTo(KanbanScreen) },
+                onServerClick = { dashboardOpen = true },
+            )
+            ChatViewTabs(
+                tabs = tabsState.tabs,
+                onOpen = { screen -> NavigationController.navigateTo(screen.key) },
+                onRemove = tabsState::remove,
+                onAddClick = { showAddTab = true },
             )
 
             // Issue #942: compact glanceable progress strip while work is active.
@@ -1364,6 +1407,40 @@ fun ChatScreen(
                 onDismiss = { showConnectionSwitcher = false },
             )
         }
+
+        if (showAddTab) {
+            AddTabSheet(
+                existing = tabsState.tabs,
+                onPick = { screen ->
+                    tabsState.add(screen)
+                    showAddTab = false
+                },
+                onDismiss = { showAddTab = false },
+            )
+        }
+
+        ChatDashboardPanel(
+            visible = dashboardOpen,
+            onOpen = { dashboardOpen = true },
+            onDismiss = { dashboardOpen = false },
+            state = stripState,
+            approval = dashboardApproval,
+            chatPendingApprovals = chatPendingApprovals,
+            onAllowOnce = { approval -> viewModel.respondToApproval("approve", approval.messageId) },
+            onDeny = { approval -> viewModel.respondToApproval("deny", approval.messageId) },
+            onShowInChat = {
+                dashboardOpen = false
+                scrollController.resumeFollowing()
+            },
+            onOpenTasks = {
+                dashboardOpen = false
+                NavigationController.navigateTo(KanbanScreen)
+            },
+            onOpenServer = {
+                dashboardOpen = false
+                NavigationController.navigateTo(SystemScreen)
+            },
+        )
     }
 }
 

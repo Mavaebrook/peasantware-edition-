@@ -89,20 +89,20 @@
         <item quantity="one">%d internal change</item>
         <item quantity="other">%d internal changes</item>
     </plurals>
-    <string name="nav_drawer_section_converse">Converse</string>
+    <string name="nav_drawer_section_converse">Talk</string>
     <string name="nav_drawer_section_automate">Automate</string>
-    <string name="nav_drawer_section_configure">Configure</string>
-    <string name="nav_drawer_section_inspect">Inspect</string>
+    <string name="nav_drawer_section_configure">Setup</string>
+    <string name="nav_drawer_section_inspect">Status</string>
 
     <!-- Screen Names -->
     <string name="screen_chat">Chat</string>
     <string name="screen_skills">Skills</string>
-    <string name="screen_cron">Cron</string>
-    <string name="screen_system">System</string>
-    <string name="screen_settings">Settings</string>
-    <string name="screen_account_connectors">Connectors</string>
-    <string name="screen_profiles">Profiles</string>
-    <string name="screen_bots">Bots</string>
+    <string name="screen_cron">Schedules</string>
+    <string name="screen_system">Server health</string>
+    <string name="screen_settings">App settings</string>
+    <string name="screen_account_connectors">Apps</string>
+    <string name="screen_profiles">Agents</string>
+    <string name="screen_bots">Bot chats</string>
     <string name="bots_empty_title">No Bots Found</string>
     <string name="bots_empty_description">Create an agent profile to start using Bot Mode.</string>
     <string name="bots_search_placeholder">Search bots…</string>
@@ -139,21 +139,21 @@
     <string name="bots_edit_delete">Delete Bot</string>
     <string name="bots_edit_delete_confirm_title">Delete %1$s?</string>
     <string name="bots_edit_delete_confirm_msg">This will permanently delete the agent profile and its configuration.</string>
-    <string name="screen_webhooks">Webhooks</string>
+    <string name="screen_webhooks">Triggers</string>
     <string name="screen_gateway">Gateway</string>
-    <string name="screen_toolsets">Toolsets</string>
-    <string name="screen_plugins">Plugins</string>
-    <string name="screen_config">Config</string>
+    <string name="screen_toolsets">Tools</string>
+    <string name="screen_plugins">Add-ons</string>
+    <string name="screen_config">Server settings</string>
     <string name="screen_mcp_servers">MCP Servers</string>
     <string name="connectors_tab_hosted">Hosted apps</string>
     <string name="connectors_tab_mcp">MCP servers</string>
     <string name="screen_memory">Memory</string>
     <string name="screen_models">Models</string>
-    <string name="screen_pairing">Pairing</string>
-    <string name="screen_keys">Keys</string>
-    <string name="screen_channels">Channels</string>
+    <string name="screen_pairing">Access requests</string>
+    <string name="screen_keys">API keys</string>
+    <string name="screen_channels">Messengers</string>
     <string name="screen_logs">Logs</string>
-    <string name="screen_local_models">Local models</string>
+    <string name="screen_local_models">Phone models</string>
     <string name="local_models_unavailable_title">Local models unavailable</string>
     <string name="local_models_unavailable_desc">This gateway does not expose the managed local models API. Update Hermes Agent to v0.22 or newer.</string>
     <string name="local_models_section_engine">Engine</string>
@@ -186,9 +186,9 @@
     <string name="local_models_job_failed">Failed</string>
     <string name="local_models_action_pause">Pause download</string>
     <string name="local_models_action_resume">Resume download</string>
-    <string name="screen_kanban">Kanban</string>
-    <string name="screen_achievements">Achievements</string>
-    <string name="screen_history">History</string>
+    <string name="screen_kanban">Tasks</string>
+    <string name="screen_achievements">Badges</string>
+    <string name="screen_history">Past chats</string>
     <string name="screen_projects">Projects</string>
     <string name="projects_action_new">New project</string>
     <string name="projects_action_create">Create</string>
@@ -234,8 +234,8 @@
         <item quantity="one">%d session</item>
         <item quantity="other">%d sessions</item>
     </plurals>
-    <string name="screen_providers">Providers</string>
-    <string name="screen_analytics">Analytics</string>
+    <string name="screen_providers">AI providers</string>
+    <string name="screen_analytics">Usage</string>
     <string name="screen_billing">Billing</string>
     <string name="screen_files">Files</string>
 
@@ -1599,6 +1599,7 @@
 
     <!-- Landing Screen -->
     <string name="landing_title">Hermes Mobile</string>
+    <string name="landing_edition">PeasantWare Edition</string>
     <string name="landing_subtitle">Control panel for Hermes Agent</string>
     <string name="landing_action_auth_login">Auth Login</string>
 
@@ -2327,4 +2328,39 @@
     <string name="reply_drop_open">Open</string>
     <string name="reply_drop_later">Later</string>
     <string name="reply_drop_dismiss">Dismiss</string>
+
+    <!-- Chat status strip, view tabs and dashboard -->
+    <string name="chat_strip_approvals">Approvals</string>
+    <string name="chat_strip_tasks">Tasks</string>
+    <string name="chat_strip_server">VPS</string>
+    <string name="chat_strip_cpu">CPU</string>
+    <string name="chat_strip_ram">RAM</string>
+    <string name="chat_strip_disk">Disk</string>
+    <string name="chat_strip_unknown">\?</string>
+    <string name="chat_strip_percent">%1$d%%</string>
+    <string name="chat_strip_approvals_desc">Approvals waiting: %1$d</string>
+    <string name="chat_strip_approvals_unknown_desc">Approvals waiting: unknown</string>
+    <string name="chat_strip_tasks_desc">Tasks on the board: %1$d</string>
+    <string name="chat_strip_server_desc">Server load: CPU %1$s, RAM %2$s, Disk %3$s</string>
+    <string name="chat_tabs_add">Add a tab</string>
+    <string name="chat_tabs_close">Close the %1$s tab</string>
+    <string name="chat_tabs_add_title">Add a tab</string>
+    <string name="chat_tabs_all_added">Every view is already a tab.</string>
+    <string name="chat_dashboard_title">Dashboard</string>
+    <string name="chat_dashboard_open">Open dashboard</string>
+    <string name="chat_dashboard_close">Close dashboard</string>
+    <string name="chat_dashboard_no_approval">Nothing is waiting for you in this chat.</string>
+    <string name="chat_dashboard_approval_fallback">The agent is asking to go ahead.</string>
+    <string name="chat_dashboard_deny">Deny</string>
+    <string name="chat_dashboard_allow_once">Allow once</string>
+    <string name="chat_dashboard_show_in_chat">Show in chat</string>
+    <plurals name="chat_dashboard_approvals_elsewhere">
+        <item quantity="one">%1$d more is waiting in another chat.</item>
+        <item quantity="other">%1$d more are waiting in other chats.</item>
+    </plurals>
+    <string name="chat_dashboard_approvals_unknown">The Gateway didn\'t answer, so approvals in other chats aren\'t known.</string>
+    <string name="chat_dashboard_server">Server</string>
+    <string name="chat_dashboard_open_server">Open server health</string>
+    <string name="chat_dashboard_no_tasks">The board is empty.</string>
+    <string name="chat_dashboard_open_tasks">Open Tasks</string>
 </resources>
