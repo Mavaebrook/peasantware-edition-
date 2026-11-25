@@ -124,6 +124,8 @@ fun ComposerToolbar(
     isFastModeChanging: Boolean = false,
     onToggleFastMode: () -> Unit = {},
     showModelProvider: Boolean = false,
+    /** Active agent profile shown ahead of the model; tapping the pill then opens the profile picker. */
+    profileLabel: String? = null,
     reasoningWireLevel: String? = null,
     pendingReasoningLevel: String? = null,
     isSessionReady: Boolean = true,
@@ -217,11 +219,18 @@ fun ComposerToolbar(
         // pushing the mic/action buttons to the far end
         val modelScrollState = rememberScrollState()
         val modelPlaceholder = stringResource(R.string.chat_model_label)
-        val modelLabel =
+        val modelText =
             currentSessionModel?.let { model ->
                 // Model ids are Latin: isolate them so an RTL locale keeps them intact.
                 BidiFormatter.getInstance().unicodeWrap(composerModelLabel(model, showProvider = showModelProvider))
-            } ?: modelPlaceholder
+            }
+        val modelLabel =
+            when {
+                profileLabel != null && modelText != null ->
+                    stringResource(R.string.chat_profile_pill, profileLabel, modelText)
+                profileLabel != null -> profileLabel
+                else -> modelText ?: modelPlaceholder
+            }
         LaunchedEffect(modelLabel) {
             modelScrollState.scrollTo(0)
         }
