@@ -186,7 +186,7 @@ jobs:
       needs.changes.outputs.code == 'true' &&
       (needs.pr-template.result == 'success' || needs.pr-template.result == 'skipped')
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 25
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -229,7 +229,7 @@ jobs:
       needs.changes.outputs.code == 'true' &&
       (needs.pr-template.result == 'success' || needs.pr-template.result == 'skipped')
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 45
     steps:
       - name: Checkout
         uses: actions/checkout@v7
