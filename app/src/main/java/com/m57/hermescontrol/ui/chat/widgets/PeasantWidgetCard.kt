@@ -90,7 +90,8 @@ internal fun sendBody(
 /**
  * Draws one widget block natively. Buttons run on the server through the
  * `peasant-gateway` plugin; a write that needs approval comes back pending and
- * shows in the approvals list. In chat the card offers Add to dashboard.
+ * shows in the approvals list. In chat the card offers Add to dashboard, and
+ * every card offers Send to TV, which shows it full-screen on the TV.
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -109,6 +110,8 @@ fun PeasantWidgetCard(
     val failedText = stringResource(R.string.widget_action_failed)
     val waitingText = stringResource(R.string.widget_waiting_approval)
     val refreshFailedText = stringResource(R.string.widget_refresh_failed)
+    val onTvText = stringResource(R.string.widget_on_tv)
+    val tvFailedText = stringResource(R.string.widget_tv_failed)
     val actionIds = current.actions.map { it.id }.toSet()
 
     fun run(
@@ -140,6 +143,29 @@ fun PeasantWidgetCard(
                     notice = failedText
                 }
             }
+            busy = false
+        }
+    }
+
+    fun sendToTv() {
+        if (busy) return
+        busy = true
+        notice = null
+        scope.launch {
+            notice =
+                when (val result = PeasantWidgets.sendToTv(current)) {
+                    is NetworkResult.Success -> {
+                        when {
+                            result.data.pendingApproval -> result.data.message ?: waitingText
+                            result.data.ok -> onTvText
+                            else -> result.data.message ?: tvFailedText
+                        }
+                    }
+
+                    is NetworkResult.Failure -> {
+                        tvFailedText
+                    }
+                }
             busy = false
         }
     }
@@ -269,6 +295,9 @@ fun PeasantWidgetCard(
                     ExpressiveTextButton(onClick = { run(action.id, JsonObject(emptyMap())) }, enabled = !busy) {
                         Text(action.label)
                     }
+                }
+                ExpressiveTextButton(onClick = { sendToTv() }, enabled = !busy) {
+                    Text(stringResource(R.string.widget_send_to_tv))
                 }
                 if (inDashboard) {
                     onRemoveFromDashboard?.let { remove ->

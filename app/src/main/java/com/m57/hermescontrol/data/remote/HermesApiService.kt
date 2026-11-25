@@ -927,6 +927,17 @@ interface HermesApiService : KanbanApiService {
     @GET("api/plugins/peasant-gateway/dash")
     suspend fun getDashTiles(): Response<JsonElement>
 
+    @POST("api/plugins/peasant-gateway/widgets/{id}/tv")
+    suspend fun sendWidgetToTv(
+        @Path("id") id: String,
+        @Body body: JsonObject,
+    ): Response<JsonElement>
+
+    @POST("api/plugins/peasant-gateway/tv")
+    suspend fun sendToTv(
+        @Body body: JsonObject,
+    ): Response<JsonElement>
+
     @POST("api/plugins/kanban/boards/{slug}/switch")
     suspend fun switchKanbanBoard(
         @Path("slug") slug: String,

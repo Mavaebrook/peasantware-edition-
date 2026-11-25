@@ -2382,6 +2382,9 @@
     <string name="widget_remove_from_dashboard">Remove</string>
     <string name="widget_on_dashboard">On dashboard</string>
     <string name="widget_add_to_dashboard">Add to dashboard</string>
+    <string name="widget_send_to_tv">Send to TV</string>
+    <string name="widget_on_tv">On the TV</string>
+    <string name="widget_tv_failed">Couldn\'t reach the TV</string>
     <string name="widget_refresh">Refresh</string>
     <string name="widget_mail_reply_prefix">Re:</string>
     <string name="widget_mail_compose">Compose</string>
@@ -2397,5 +2400,7 @@
     <string name="widget_browser_no_page">No page open</string>
     <string name="widget_browser_vault_match">Saved login: %1$s</string>
     <string name="chat_dashboard_widgets">Widgets</string>
+    <string name="chat_dashboard_send_to_tv">Send dashboard to TV</string>
+    <string name="chat_dashboard_tv_title">Dashboard</string>
     <string name="chat_dashboard_widgets_empty">Tap Add to dashboard on a widget in chat to keep it here.</string>
 </resources>
