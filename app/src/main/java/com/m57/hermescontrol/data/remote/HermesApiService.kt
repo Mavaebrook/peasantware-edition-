@@ -167,6 +167,7 @@ import com.m57.hermescontrol.data.model.WebhookToggleSubscriptionRequest
 import com.m57.hermescontrol.data.model.WebhooksResponse
 import com.m57.hermescontrol.data.model.WebhooksToggleRequest
 import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
@@ -907,6 +908,24 @@ interface HermesApiService : KanbanApiService {
 
     @GET("api/plugins/command-home/overview")
     suspend fun getCommandHomeOverview(): Response<CommandHomeOverview>
+
+    @GET("api/plugins/peasant-gateway/widgets")
+    suspend fun getWidgetCatalog(): Response<JsonElement>
+
+    @GET("api/plugins/peasant-gateway/widgets/{id}")
+    suspend fun getWidget(
+        @Path("id") id: String,
+    ): Response<JsonElement>
+
+    @POST("api/plugins/peasant-gateway/widgets/{id}/actions/{action}")
+    suspend fun runWidgetAction(
+        @Path("id") id: String,
+        @Path("action") action: String,
+        @Body body: JsonObject,
+    ): Response<JsonElement>
+
+    @GET("api/plugins/peasant-gateway/dash")
+    suspend fun getDashTiles(): Response<JsonElement>
 
     @POST("api/plugins/kanban/boards/{slug}/switch")
     suspend fun switchKanbanBoard(

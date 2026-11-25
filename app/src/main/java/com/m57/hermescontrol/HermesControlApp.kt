@@ -28,6 +28,7 @@ import com.m57.hermescontrol.share.SHARE_INBOX_DIRECTORY
 import com.m57.hermescontrol.shortcuts.LauncherShortcuts
 import com.m57.hermescontrol.ui.analytics.AnalyticsPreloader
 import com.m57.hermescontrol.ui.chat.cleanStalePastedImages
+import com.m57.hermescontrol.ui.chat.widgets.DashboardPins
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -60,6 +61,7 @@ class HermesControlApp :
         SessionListCacheStore.init(this)
         // Issue #1642: "finished, not opened yet" marks for History.
         SessionAttentionStore.init(this)
+        DashboardPins.init(this)
         SessionAttentionTracker.start(appScope)
         // Reply-notification turn boundaries survive process death (armed before
         // each mobile prompt, consumed by the matching completion).
