@@ -2321,4 +2321,39 @@
     <string name="approval_deny_reason_label">Reason (optional)</string>
     <string name="approval_deny_confirm">Deny</string>
     <string name="chat_reply_continuing">Continuing…</string>
+
+    <!-- Chat status strip, view tabs and dashboard -->
+    <string name="chat_strip_approvals">Approvals</string>
+    <string name="chat_strip_tasks">Tasks</string>
+    <string name="chat_strip_server">VPS</string>
+    <string name="chat_strip_cpu">CPU</string>
+    <string name="chat_strip_ram">RAM</string>
+    <string name="chat_strip_disk">Disk</string>
+    <string name="chat_strip_unknown">\?</string>
+    <string name="chat_strip_percent">%1$d%%</string>
+    <string name="chat_strip_approvals_desc">Approvals waiting: %1$d</string>
+    <string name="chat_strip_approvals_unknown_desc">Approvals waiting: unknown</string>
+    <string name="chat_strip_tasks_desc">Tasks on the board: %1$d</string>
+    <string name="chat_strip_server_desc">Server load: CPU %1$s, RAM %2$s, Disk %3$s</string>
+    <string name="chat_tabs_add">Add a tab</string>
+    <string name="chat_tabs_close">Close the %1$s tab</string>
+    <string name="chat_tabs_add_title">Add a tab</string>
+    <string name="chat_tabs_all_added">Every view is already a tab.</string>
+    <string name="chat_dashboard_title">Dashboard</string>
+    <string name="chat_dashboard_open">Open dashboard</string>
+    <string name="chat_dashboard_close">Close dashboard</string>
+    <string name="chat_dashboard_no_approval">Nothing is waiting for you in this chat.</string>
+    <string name="chat_dashboard_approval_fallback">The agent is asking to go ahead.</string>
+    <string name="chat_dashboard_deny">Deny</string>
+    <string name="chat_dashboard_allow_once">Allow once</string>
+    <string name="chat_dashboard_show_in_chat">Show in chat</string>
+    <plurals name="chat_dashboard_approvals_elsewhere">
+        <item quantity="one">%1$d more is waiting in another chat.</item>
+        <item quantity="other">%1$d more are waiting in other chats.</item>
+    </plurals>
+    <string name="chat_dashboard_approvals_unknown">The Gateway didn\'t answer, so approvals in other chats aren\'t known.</string>
+    <string name="chat_dashboard_server">Server</string>
+    <string name="chat_dashboard_open_server">Open server health</string>
+    <string name="chat_dashboard_no_tasks">The board is empty.</string>
+    <string name="chat_dashboard_open_tasks">Open Tasks</string>
 </resources>

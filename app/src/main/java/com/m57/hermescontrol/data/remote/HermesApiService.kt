@@ -15,6 +15,7 @@ import com.m57.hermescontrol.data.model.BulkDeleteRequest
 import com.m57.hermescontrol.data.model.BulkDeleteResponse
 import com.m57.hermescontrol.data.model.ChatImageUploadResponse
 import com.m57.hermescontrol.data.model.CheckpointsResponse
+import com.m57.hermescontrol.data.model.CommandHomeOverview
 import com.m57.hermescontrol.data.model.ConfigSchemaResponse
 import com.m57.hermescontrol.data.model.ConfigUpdateRequest
 import com.m57.hermescontrol.data.model.CreateCronJobRequest
@@ -903,6 +904,9 @@ interface HermesApiService : KanbanApiService {
 
     @GET("api/plugins/kanban/board")
     suspend fun getKanbanBoard(): Response<KanbanBoardResponse>
+
+    @GET("api/plugins/command-home/overview")
+    suspend fun getCommandHomeOverview(): Response<CommandHomeOverview>
 
     @POST("api/plugins/kanban/boards/{slug}/switch")
     suspend fun switchKanbanBoard(
