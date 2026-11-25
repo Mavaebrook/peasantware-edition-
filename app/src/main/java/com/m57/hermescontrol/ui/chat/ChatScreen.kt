@@ -159,6 +159,7 @@ import com.m57.hermescontrol.ui.chat.dashboard.ChatStatusStripViewModel
 import com.m57.hermescontrol.ui.chat.dashboard.ChatViewTabs
 import com.m57.hermescontrol.ui.chat.dashboard.DashboardApproval
 import com.m57.hermescontrol.ui.chat.dashboard.rememberChatTabsState
+import com.m57.hermescontrol.ui.chat.drops.ReplyDropStack
 import com.m57.hermescontrol.ui.chat.fullbleed.FullBleedChatList
 import com.m57.hermescontrol.ui.chat.fullbleed.TranscriptActions
 import com.m57.hermescontrol.ui.chat.profiles.ProfilePickerSheet
@@ -1401,6 +1402,11 @@ fun ChatScreen(
             onRefresh = { connectorsViewModel.refresh(force = true) },
             onConnect = { slug, reconnect -> connectorsViewModel.connect(slug, reconnect) },
             onClearError = connectorsViewModel::clearError,
+        )
+
+        ReplyDropStack(
+            currentSessionId = state.currentSessionId,
+            titleFor = { id -> state.sessions.firstOrNull { it.id == id }?.title },
         )
 
         if (showConnectionSwitcher && !profileLocked) {
