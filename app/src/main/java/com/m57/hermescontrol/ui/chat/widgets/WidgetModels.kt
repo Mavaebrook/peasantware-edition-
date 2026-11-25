@@ -174,21 +174,37 @@ data class BrowserData(
 
 /** Typed view of a block's data; [Unknown] for a type this app version doesn't draw. */
 sealed interface WidgetContent {
-    data class Stat(val data: StatData) : WidgetContent
+    data class Stat(
+        val data: StatData,
+    ) : WidgetContent
 
-    data class Bar(val data: BarData) : WidgetContent
+    data class Bar(
+        val data: BarData,
+    ) : WidgetContent
 
-    data class Items(val data: ListData) : WidgetContent
+    data class Items(
+        val data: ListData,
+    ) : WidgetContent
 
-    data class Rings(val data: RingsData) : WidgetContent
+    data class Rings(
+        val data: RingsData,
+    ) : WidgetContent
 
-    data class Mail(val data: MailListData) : WidgetContent
+    data class Mail(
+        val data: MailListData,
+    ) : WidgetContent
 
-    data class Doc(val data: DocData) : WidgetContent
+    data class Doc(
+        val data: DocData,
+    ) : WidgetContent
 
-    data class Folder(val data: FolderData) : WidgetContent
+    data class Folder(
+        val data: FolderData,
+    ) : WidgetContent
 
-    data class Browser(val data: BrowserData) : WidgetContent
+    data class Browser(
+        val data: BrowserData,
+    ) : WidgetContent
 
     data object Unknown : WidgetContent
 }
@@ -230,5 +246,4 @@ fun WidgetBlock.content(): WidgetContent =
     }.getOrDefault(WidgetContent.Unknown)
 
 /** Encodes a block for the local dashboard snapshot. */
-internal fun WidgetBlock.toJsonString(): String =
-    widgetJson.encodeToString(WidgetBlock.serializer(), this)
+internal fun WidgetBlock.toJsonString(): String = widgetJson.encodeToString(WidgetBlock.serializer(), this)

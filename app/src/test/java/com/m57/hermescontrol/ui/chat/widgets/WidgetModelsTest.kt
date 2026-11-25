@@ -73,7 +73,12 @@ class WidgetModelsTest {
                 "recent":[{"id":"8","title":"Plan","when":"2026-11-20"}]}}""",
             )!!.content() as WidgetContent.Doc
         assertEquals("7", doc.data.docId)
-        assertEquals("2026-11-20", doc.data.recent.single().whenText)
+        assertEquals(
+            "2026-11-20",
+            doc.data.recent
+                .single()
+                .whenText,
+        )
     }
 
     @Test

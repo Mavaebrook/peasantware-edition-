@@ -37,11 +37,15 @@ object PeasantWidgets {
     ): NetworkResult<WidgetActionResult> =
         withContext(Dispatchers.IO) {
             when (val result = safeApiCall { ApiClient.hermesApi.runWidgetAction(id, action, body) }) {
-                is NetworkResult.Success ->
+                is NetworkResult.Success -> {
                     result.data.decodeOr {
                         runCatching { widgetJson.decodeFromJsonElement<WidgetActionResult>(it) }.getOrNull()
                     }
-                is NetworkResult.Failure -> result
+                }
+
+                is NetworkResult.Failure -> {
+                    result
+                }
             }
         }
 
@@ -57,9 +61,13 @@ object PeasantWidgets {
     suspend fun catalog(): NetworkResult<List<WidgetCatalogEntry>> =
         withContext(Dispatchers.IO) {
             when (val result = safeApiCall { ApiClient.hermesApi.getWidgetCatalog() }) {
-                is NetworkResult.Success ->
+                is NetworkResult.Success -> {
                     result.data.decodeOr { listFrom(it, "widgets", WidgetCatalogEntry.serializer()) }
-                is NetworkResult.Failure -> result
+                }
+
+                is NetworkResult.Failure -> {
+                    result
+                }
             }
         }
 
@@ -112,7 +120,12 @@ object DashboardPins {
         if (prefs != null) return
         val p = context.applicationContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         prefs = p
-        val ids = p.getString(KEY_ORDER, null)?.split(SEPARATOR)?.filter { it.isNotBlank() }.orEmpty()
+        val ids =
+            p
+                .getString(KEY_ORDER, null)
+                ?.split(SEPARATOR)
+                ?.filter { it.isNotBlank() }
+                .orEmpty()
         _pins.value =
             ids.distinct().map { id ->
                 PinnedWidget(id, p.getString(SNAPSHOT_PREFIX + id, null)?.let(::parseWidgetBlock))

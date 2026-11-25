@@ -135,7 +135,10 @@ fun PeasantWidgetCard(
                     }
                     if (reply.ok || reply.pendingApproval) onSuccess()
                 }
-                is NetworkResult.Failure -> notice = failedText
+
+                is NetworkResult.Failure -> {
+                    notice = failedText
+                }
             }
             busy = false
         }
@@ -151,7 +154,10 @@ fun PeasantWidgetCard(
                     current = result.data
                     DashboardPins.remember(result.data)
                 }
-                is NetworkResult.Failure -> notice = refreshFailedText
+
+                is NetworkResult.Failure -> {
+                    notice = refreshFailedText
+                }
             }
             busy = false
         }
@@ -172,11 +178,23 @@ fun PeasantWidgetCard(
                 )
             } else {
                 when (val content = current.content()) {
-                    is WidgetContent.Stat -> StatBody(content.data)
-                    is WidgetContent.Bar -> BarBody(content.data)
-                    is WidgetContent.Items -> ItemsBody(content.data)
-                    is WidgetContent.Rings -> RingsBody(content.data)
-                    is WidgetContent.Mail ->
+                    is WidgetContent.Stat -> {
+                        StatBody(content.data)
+                    }
+
+                    is WidgetContent.Bar -> {
+                        BarBody(content.data)
+                    }
+
+                    is WidgetContent.Items -> {
+                        ItemsBody(content.data)
+                    }
+
+                    is WidgetContent.Rings -> {
+                        RingsBody(content.data)
+                    }
+
+                    is WidgetContent.Mail -> {
                         MailBody(
                             data = content.data,
                             canReply = "reply" in actionIds && "send" in actionIds,
@@ -196,7 +214,9 @@ fun PeasantWidgetCard(
                                 )
                             },
                         )
-                    is WidgetContent.Doc ->
+                    }
+
+                    is WidgetContent.Doc -> {
                         DocBody(
                             data = content.data,
                             canSave = "save" in actionIds,
@@ -215,7 +235,9 @@ fun PeasantWidgetCard(
                             },
                             onOpen = { docId -> run("open", buildJsonObject { put("doc_id", docId) }) },
                         )
-                    is WidgetContent.Folder ->
+                    }
+
+                    is WidgetContent.Folder -> {
                         FolderBody(
                             data = content.data,
                             canOpen = "open" in actionIds,
@@ -223,13 +245,19 @@ fun PeasantWidgetCard(
                                 run("open", buildJsonObject { put("path", JsonArray(path.map(::JsonPrimitive))) })
                             },
                         )
-                    is WidgetContent.Browser -> BrowserBody(content.data)
-                    WidgetContent.Unknown ->
+                    }
+
+                    is WidgetContent.Browser -> {
+                        BrowserBody(content.data)
+                    }
+
+                    WidgetContent.Unknown -> {
                         Text(
                             text = stringResource(R.string.widget_unknown_type, current.type),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
+                    }
                 }
             }
             notice?.let {
