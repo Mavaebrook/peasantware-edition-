@@ -48,12 +48,16 @@ class ProfilePickerViewModel(
             val hidden = runCatching { AuthManager.getHiddenProfiles().toSet() }.getOrDefault(emptySet())
             _state.update {
                 when (result) {
-                    is NetworkResult.Success ->
+                    is NetworkResult.Success -> {
                         it.copy(
                             isLoading = false,
                             profiles = result.data.profiles.toPickerProfiles(hidden),
                         )
-                    is NetworkResult.Failure -> it.copy(isLoading = false, loadFailed = true)
+                    }
+
+                    is NetworkResult.Failure -> {
+                        it.copy(isLoading = false, loadFailed = true)
+                    }
                 }
             }
         }

@@ -226,10 +226,17 @@ fun ComposerToolbar(
             }
         val modelLabel =
             when {
-                profileLabel != null && modelText != null ->
+                profileLabel != null && modelText != null -> {
                     stringResource(R.string.chat_profile_pill, profileLabel, modelText)
-                profileLabel != null -> profileLabel
-                else -> modelText ?: modelPlaceholder
+                }
+
+                profileLabel != null -> {
+                    profileLabel
+                }
+
+                else -> {
+                    modelText ?: modelPlaceholder
+                }
             }
         LaunchedEffect(modelLabel) {
             modelScrollState.scrollTo(0)

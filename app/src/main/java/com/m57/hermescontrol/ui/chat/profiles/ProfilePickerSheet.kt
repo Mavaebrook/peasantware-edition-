@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Hub
 import androidx.compose.material.icons.filled.Tune
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
@@ -39,6 +40,7 @@ import com.m57.hermescontrol.ui.common.ExpressiveTextButton
  * each one uses; picking one switches to it, which starts a fresh chat there.
  * The last row keeps the old pill's job: changing this chat's model.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfilePickerSheet(
     viewModel: ProfilePickerViewModel,
@@ -72,8 +74,10 @@ fun ProfilePickerSheet(
                 modifier = Modifier.padding(horizontal = 24.dp, vertical = 4.dp),
             )
             when {
-                state.isLoading && state.profiles.isEmpty() ->
+                state.isLoading && state.profiles.isEmpty() -> {
                     ExpressiveCircularProgressIndicator(modifier = Modifier.padding(24.dp).size(32.dp))
+                }
+
                 state.loadFailed && state.profiles.isEmpty() -> {
                     Text(
                         text = stringResource(R.string.chat_profile_picker_load_failed),
@@ -127,13 +131,16 @@ fun ProfilePickerSheet(
                         },
                         trailingContent = {
                             when {
-                                state.switchingTo == profile.name ->
+                                state.switchingTo == profile.name -> {
                                     ExpressiveCircularProgressIndicator(modifier = Modifier.size(20.dp))
-                                active ->
+                                }
+
+                                active -> {
                                     Icon(
                                         imageVector = Icons.Filled.Check,
                                         contentDescription = stringResource(R.string.chat_profile_picker_active),
                                     )
+                                }
                             }
                         },
                         colors = listColors,
