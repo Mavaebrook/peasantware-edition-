@@ -2329,6 +2329,17 @@
     <string name="reply_drop_later">Later</string>
     <string name="reply_drop_dismiss">Dismiss</string>
 
+    <!-- Composer profile picker -->
+    <string name="chat_profile_pill">%1$s · %2$s</string>
+    <string name="chat_profile_picker_title">Agent profile</string>
+    <string name="chat_profile_picker_hint">Switching profiles starts a new chat with that agent. This chat stays in Past chats.</string>
+    <string name="chat_profile_picker_load_failed">Couldn\'t load profiles from the server.</string>
+    <string name="chat_profile_picker_switch_failed">Couldn\'t switch profiles. Try again.</string>
+    <string name="chat_profile_picker_mixture">Mix of models</string>
+    <string name="chat_profile_picker_active">Active profile</string>
+    <string name="chat_profile_picker_change_model">Change this chat\'s model</string>
+    <string name="chat_profile_picker_change_model_hint">Keeps the current profile</string>
+
     <!-- Chat status strip, view tabs and dashboard -->
     <string name="chat_strip_approvals">Approvals</string>
     <string name="chat_strip_tasks">Tasks</string>
