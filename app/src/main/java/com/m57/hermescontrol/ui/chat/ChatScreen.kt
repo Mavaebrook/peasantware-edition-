@@ -149,6 +149,7 @@ import com.m57.hermescontrol.ui.chat.components.replaceComposerDraft
 import com.m57.hermescontrol.ui.chat.components.restoreRejectedComposerDraft
 import com.m57.hermescontrol.ui.chat.components.shouldShowProgressChip
 import com.m57.hermescontrol.ui.chat.components.tailContentKey
+import com.m57.hermescontrol.ui.chat.drops.ReplyDropStack
 import com.m57.hermescontrol.ui.chat.fullbleed.FullBleedChatList
 import com.m57.hermescontrol.ui.chat.fullbleed.TranscriptActions
 import com.m57.hermescontrol.ui.common.ActionProgressDialog
@@ -1338,6 +1339,11 @@ fun ChatScreen(
             onRefresh = { connectorsViewModel.refresh(force = true) },
             onConnect = { slug, reconnect -> connectorsViewModel.connect(slug, reconnect) },
             onClearError = connectorsViewModel::clearError,
+        )
+
+        ReplyDropStack(
+            currentSessionId = state.currentSessionId,
+            titleFor = { id -> state.sessions.firstOrNull { it.id == id }?.title },
         )
 
         if (showConnectionSwitcher && !profileLocked) {

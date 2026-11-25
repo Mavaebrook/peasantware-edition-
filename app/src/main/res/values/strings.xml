@@ -2321,4 +2321,10 @@
     <string name="approval_deny_reason_label">Reason (optional)</string>
     <string name="approval_deny_confirm">Deny</string>
     <string name="chat_reply_continuing">Continuing…</string>
+    <string name="reply_drop_untitled">Another chat</string>
+    <string name="reply_drop_failed">This chat stopped with an error.</string>
+    <string name="reply_drop_new_reply">New reply</string>
+    <string name="reply_drop_open">Open</string>
+    <string name="reply_drop_later">Later</string>
+    <string name="reply_drop_dismiss">Dismiss</string>
 </resources>
